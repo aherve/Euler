@@ -15,14 +15,6 @@ class Frac
     Frac.new(n/gcd, d/gcd)
   end
 
-  def value
-    1.0*n/d
-  end
-
-  def to_s
-    "#{n}/#{d}"
-  end
-
   def add(f)
     Frac.new(self.n*f.d + self.d*f.n, self.d*f.d).simplify
   end
@@ -31,22 +23,27 @@ class Frac
     Frac.new(d,n).simplify
   end
 
+  def to_s
+    "#{n}/#{d}"
+  end
+
 end
 
 def convergent(ary)
-  return ary.first if ary.size < 2
-  return ary.first.add( ( convergent(ary[1..-1])).inv )
-end
-
-e_enum = Enumerator.new do |en|
-  i = 1
-  en << Frac.new(2,1)
-  loop do 
-    en << Frac.new(1,1)
-    en << Frac.new(2*i,1)
-    en << Frac.new(1,1)
-    i+=1
+  @mem ||= Hash.new
+  k = ary.map(&:to_s).join(',')
+  if ary.size < 2
+    @mem[k] ||= ary.first 
+  else
+    @mem[k] ||= ary.first.add( ( convergent(ary[1..-1])).inv )
   end
 end
 
-p convergent(e_enum.take(100)).n.to_s.split('').map(&:to_i).reduce(:+)
+e_enum = Enumerator.new do |en|
+  en << Frac.new(1,1)
+  loop do 
+    en << Frac.new(2,1)
+  end
+end
+
+p (1..1000).map{|i| convergent(e_enum.take(i))}.select{|f| f.n.to_s.split('').size > f.d.to_s.split('').size}.size
