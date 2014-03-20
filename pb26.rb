@@ -35,4 +35,4 @@ div_cycle_length = -> d {
   }
 }
 
-p (1..1000).sort_by{|i| div_cycle_length.(i)}.last
+p (1..1000).sort_by(&div_cycle_length).last
