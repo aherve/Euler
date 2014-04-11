@@ -24,11 +24,12 @@ class Path
     [
       i + 1 < matrix.size ? Path.new(matrix,i+1,j  ,sum) : nil,
       j + 1 < matrix.size ? Path.new(matrix,i  ,j+1,sum) : nil,
+      i - 1 >= 0          ? Path.new(matrix,i-1,j  ,sum) : nil,
     ].compact
   end
 
   def finished
-    j == matrix.size - 1 and i == matrix.size - 1
+    j == matrix.size - 1
   end
 
   def == p
@@ -44,15 +45,18 @@ class Path
   end
 end
 
-m = Matrix.new('./matrix81.txt')
+m = Matrix.new('./matrix82.txt')
+#m = Matrix.new('./matrix_test.dat')
 p = Path.new(m)
-paths = (0..0).map{|i| p = Path.new(m,i) ; {p.ij => p}}.reduce(:merge)
+paths = (0..m.size-1).map{|i| p = Path.new(m,i) ; {p.ij => p}}.reduce(:merge)
+maxj = 0
 
 while (final = paths.values.select(&:finished)).empty?
   child = paths.values.flat_map(&:child_paths).reject{|p| (s=paths[p.ij]) and s.sum <= p.sum}.sort_by(&:sum).first
   paths[child.ij] = child
-  if rand(100) == 1
-    p paths.values.sort_by{|pp| (m.size - 1 - p.i)**2 + (m.size - 1 - p.j)**2}.last.ij
+  if (new_max = paths.values.map(&:j).max) > maxj 
+    maxj = new_max
+    p "#{(100*maxj.to_f/(m.size - 1)).round}% computed"
   end
 end
 

@@ -24,6 +24,8 @@ class Path
     [
       i + 1 < matrix.size ? Path.new(matrix,i+1,j  ,sum) : nil,
       j + 1 < matrix.size ? Path.new(matrix,i  ,j+1,sum) : nil,
+      i - 1 >= 0          ? Path.new(matrix,i-1,j  ,sum) : nil,
+      j - 1 >= 0          ? Path.new(matrix,i  ,j-1,sum) : nil,
     ].compact
   end
 
@@ -44,7 +46,7 @@ class Path
   end
 end
 
-m = Matrix.new('./matrix81.txt')
+m = Matrix.new('./matrix83.txt')
 p = Path.new(m)
 paths = (0..0).map{|i| p = Path.new(m,i) ; {p.ij => p}}.reduce(:merge)
 
