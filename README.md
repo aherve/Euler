@@ -1,1 +1,1 @@
-## Ruby source code for [project euler](http://projecteuler.net)
+## Source code for [project euler](http://projecteuler.net)
