@@ -7,7 +7,7 @@ import (
 
 func TestRepresent(t *testing.T) {
 	i1 := 987631
-	expected := 11087826295934310
+	expected := 6531031914842725
 
 	if r := represent(i1); r != expected {
 		t.Error(i1, " should be represented as ", expected, ", got ", r)
@@ -15,7 +15,7 @@ func TestRepresent(t *testing.T) {
 }
 
 func TestIsMagic(t *testing.T) {
-	magic := 7654182
+	magic := 987631
 	noMagic := 9680715
 
 	if ok, _ := isMagic(magic); !ok {
